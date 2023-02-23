@@ -11,6 +11,9 @@ module.exports = {
     'ecmaVersion': 'latest'
   },
   'rules': {
+    'no-unused-vars': [
+      'error',
+    ],
     'indent': [
       'error',
       2

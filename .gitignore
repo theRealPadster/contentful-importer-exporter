@@ -68,5 +68,7 @@ typings/
 # redis dump files
 *.rdb
 
-# backup folder
-backups/
+# backup folders
+backups/**/
+# legacy backup files
+backups/*.json
