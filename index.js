@@ -1,19 +1,21 @@
-'use strict'
+'use strict';
 
-const koa = require('koa'),
-      views = require('koa-views'),
-      Router = require('koa-router'),
-      path = require('path'),
-      contentfulImport = require('contentful-import'),
-      contentfulExport = require('contentful-export');
+const koa = require('koa');
+const views = require('koa-views');
+const Router = require('koa-router');
+const path = require('path');
+const contentfulImport = require('contentful-import');
+const contentfulExport = require('contentful-export');
 
 const app = new koa();
 const router = new Router();
 
+// Get route (render the page)
 router.get('/', async ctx => {
   await ctx.render('index');
 });
 
+// POST route (handle the form submission)
 router.post('/', async ctx => {
   try {
     const body = ctx.request.body;
