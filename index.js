@@ -21,6 +21,9 @@ router.post('/', async ctx => {
     const body = ctx.request.body;
     const environment = body.exportEnvironment || 'master';
     console.log(`ENVIRONMENT: ${environment} ---------`);
+    if (body.includeAssets) console.log('Including assets');
+    if (body.exportDrafts) console.log('Including drafts');
+    if (body.exportArchived) console.log('Including archived');
 
     const reducedBackupName = body.backupName.replace(/\s+/g, '-').toLowerCase();
 
@@ -35,6 +38,8 @@ router.post('/', async ctx => {
         exportDir: `./backups/${reducedBackupName}/`,
         contentFile: `${reducedBackupName}.json`,
         downloadAssets: body.includeAssets ? true : false,
+        includeDrafts: body.exportDrafts ? true : false,
+        includeArchived: body.exportArchived ? true : false,
       });
 
     } else if (body.mode && body.mode === 'backup-and-import') {
@@ -47,6 +52,8 @@ router.post('/', async ctx => {
         exportDir: `./backups/${reducedBackupName}/`,
         contentFile: `${reducedBackupName}.json`,
         downloadAssets: body.includeAssets ? true : false,
+        includeDrafts: body.exportDrafts ? true : false,
+        includeArchived: body.exportArchived ? true : false,
       });
 
       await contentfulImport({

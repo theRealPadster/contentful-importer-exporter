@@ -15,6 +15,8 @@
       <p><label for="export-space">Space ID*</label> <input type="text" id="export-space" name="export-space" required></p>
       <p><label for="export-environment">Environment ID (leave blank for master environment)</label> <input type="text" id="export-environment" name="export-environment"></p>
       <p><label for="export-management">Management Token*</label> <input type="text" id="export-management" name="export-management" required></p>
+      <p><label for="export-drafts">Include Drafts</label> <input type="checkbox" id="export-drafts" name="export-drafts"></p>
+      <p><label for="export-archived">Include Archived</label> <input type="checkbox" id="export-archived" name="export-archived"></p>
     </fieldset>
     <fieldset>
       <h2>Organization to Import Into</h2>
@@ -27,7 +29,7 @@
       <p><label for="backup-name">Name of Backup*</label> <input type="text" id="backup-name" name="backup-name" required></p>
       <label for="backup-only">Backup Only</label><input type="radio" id="backup-only" name="backup-or-import" value="backup-only" checked>
       <label for="backup-and-import">Backup and Import</label><input type="radio" id="backup-and-import" name="backup-or-import" value="backup-and-import">
-      <label for="import-only">Import Only</label><input type="radio" id="import-only" name="backup-or-import" value="import-only">
+      <label for="import-only">Import Only (not implemented)</label><input type="radio" id="import-only" name="backup-or-import" value="import-only">
       <br>
       <label for="include-assets">Include Assets</label> <input type="checkbox" id="include-assets" name="include-assets">
     </fieldset>
@@ -55,6 +57,8 @@
           exportSpace: document.querySelector('#export-space').value,
           exportEnvironment: document.querySelector('#export-environment').value,
           exportManagement: document.querySelector('#export-management').value,
+          exportDrafts: document.querySelector('#export-drafts').checked,
+          exportArchived: document.querySelector('#export-archived').checked,
           importSpace: document.querySelector('#import-space').value,
           importManagement: document.querySelector('#import-management').value,
           mode: document.querySelector('[name=backup-or-import]:checked').value,
