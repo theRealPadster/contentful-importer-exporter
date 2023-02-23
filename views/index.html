@@ -27,10 +27,14 @@
     <fieldset>
       <h2>Back up or Import Into Another Organization?</h2>
       <p><label for="backup-name">Name of Backup*</label> <input type="text" id="backup-name" name="backup-name" required></p>
-      <label for="backup-only">Backup Only</label><input type="radio" id="backup-only" name="backup-or-import" value="backup-only" checked>
-      <label for="backup-and-import">Backup and Import</label><input type="radio" id="backup-and-import" name="backup-or-import" value="backup-and-import">
-      <label for="import-only">Import Only (not implemented)</label><input type="radio" id="import-only" name="backup-or-import" value="import-only">
-      <br>
+      <p>
+        <label for="mode">Mode</label>
+        <select name="mode" id="mode">
+          <option value="backup-only" selected>Backup Only</option>
+          <option value="backup-and-import">Backup and Import</option>
+          <option value="import-only">Import Only</option>
+        </select>
+      </p>
       <label for="include-assets">Include Assets</label> <input type="checkbox" id="include-assets" name="include-assets">
     </fieldset>
     <br />
@@ -61,7 +65,7 @@
           exportArchived: document.querySelector('#export-archived').checked,
           importSpace: document.querySelector('#import-space').value,
           importManagement: document.querySelector('#import-management').value,
-          mode: document.querySelector('[name=backup-or-import]:checked').value,
+          mode: document.querySelector('#mode').value,
           includeAssets: document.querySelector('#include-assets').checked,
         })
       })

@@ -41,7 +41,6 @@ router.post('/', async ctx => {
         includeDrafts: body.exportDrafts ? true : false,
         includeArchived: body.exportArchived ? true : false,
       });
-
     } else if (body.mode && body.mode === 'backup-and-import') {
       if(!(body.backupName && body.exportSpace && body.exportManagement && body.importSpace && body.importManagement)) throw new Error('missing information');
 
@@ -64,10 +63,17 @@ router.post('/', async ctx => {
         uploadAssets: body.includeAssets ? true : false,
         assetsDirectory: `./backups/${reducedBackupName}/`,
       });
-
     } else if (body.mode && body.mode === 'import-only') {
-      console.log('import only not implemented yet');
-      throw new Error('mode not supported');
+      if(!(body.backupName && body.importSpace && body.importManagement)) throw new Error('missing information');
+
+      await contentfulImport({
+        spaceId: body.importSpace,
+        managementToken: body.importManagement,
+        environmentId: 'master',
+        contentFile: `./backups/${reducedBackupName}/${reducedBackupName}.json`,
+        uploadAssets: body.includeAssets ? true : false,
+        assetsDirectory: `./backups/${reducedBackupName}/`,
+      });
     } else {
       throw new Error('mode not supported');
     }
