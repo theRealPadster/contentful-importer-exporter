@@ -22,3 +22,11 @@ Since this will be handled internally, it shouldn't be too difficult to diagnose
 
 ### 0.1.0
 - The initial release! :tada:
+
+### 0.2.0
+- Initial version on new repo
+
+### 0.3.0
+- Add option for including assets
+- Add options for includeing draft and archived content
+- Add import-only mode

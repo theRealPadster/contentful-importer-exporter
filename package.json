@@ -1,6 +1,6 @@
 {
   "name": "contentful-importer-exporter",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A tool that takes the contents of an organization, backs it up and optionally puts into another organization",
   "main": "index.js",
   "scripts": {
