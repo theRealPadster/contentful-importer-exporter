@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head></head>
+<body>
+  <h1>Contentful Backup &amp; Importer</h1>
+  <form>
+    <fieldset>
+      <h2>Organization to Export From</h2>
+      <p><i>This is the contentful organization that you are pulling the information from.</i></p>
+      <p><label for="backup-name">Name of Backup*</label> <input type="text" id="backup-name" name="backup-name" required></p>
+      <p><label for="export-space">Space ID*</label> <input type="text" id="export-space" name="export-space" required></p>
+      <p><label for="export-space">Environment ID (leave blank for master environment)</label> <input type="text" id="export-environment" name="export-environment"></p>
+      <p><label for="export-management">Management Token*</label> <input type="text" id="export-management" name="export-management" required></p>
+    </fieldset>
+    <fieldset>
+      <h2>Organization to Import Into</h2>
+      <p> <i>This is the contentful organization that you are putting the other organization's info into if the appropriate mode is selected.</i> </p>
+      <p><label for="import-space">Space ID</label> <input type="text" id="import-space" name="import-space"></p>
+      <p><label for="import-management">Management Token</label> <input type="text" id="import-management" name="import-management"></p>
+    </fieldset>
+    <fieldset>
+      <h2>Backup or Import Into Another Organization?</h2>
+      <label for="backup-only">Backup Only</label><input type="radio" id="backup-only" name="backup-or-import" value="backup-only" checked>
+      <label for="backup-and-import">Backup and Import</label><input type="radio" id="backup-and-import" name="backup-or-import" value="backup-and-import">
+    </fieldset>
+    <br />
+    <button style="margin: 0 auto; display: block; font-size: 1.1em;">Submit</button>
+    <br />
+    <p id="queued" style="display: none; text-align: center;">Your request has been queued. This page will be updated once completed, otherwise follow along with the updater in your Node terminal.</p>
+    <p id="response" style="display: none; font-family: monospace; text-align: center;"></p>
+  </form>
+  <script>
+    document.querySelector('form').addEventListener('submit', e => {
+      e.preventDefault();
+
+      document.querySelector('button').disabled = true;
+      document.querySelector('#queued').style.display = 'block';
+      if(document.querySelector('#response').style.display == 'block') document.querySelector('#response').style.display = 'none';
+
+      fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          backupName: document.querySelector('#backup-name').value,
+          exportSpace: document.querySelector('#export-space').value,
+          exportEnvironment: document.querySelector('#export-environment').value,
+          exportManagement: document.querySelector('#export-management').value,
+          importSpace: document.querySelector('#import-space').value,
+          importManagement: document.querySelector('#import-management').value,
+          mode: document.querySelector('[name=backup-or-import]:checked').value
+        })
+      })
+        .then(response => response.json())
+        .then(response => {
+          document.querySelector('button').disabled = false;
+          document.querySelector('#queued').style.display = 'none';
+          document.querySelector('#response').innerHTML = JSON.stringify(response);
+          document.querySelector('#response').style.display = 'block';
+        })
+        .catch(err => {
+          document.querySelector('button').disabled = false;
+          document.querySelector('#queued').style.display = 'none';
+          document.querySelector('#response').innerHTML = JSON.stringify(response);
+          document.querySelector('#response').style.display = 'block';
+        });
+    })
+  </script>
+</body>
+</html>
