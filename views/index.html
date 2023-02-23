@@ -14,7 +14,7 @@
       <p><i>This is the contentful organization that you are pulling the information from.</i></p>
       <p><label for="backup-name">Name of Backup*</label> <input type="text" id="backup-name" name="backup-name" required></p>
       <p><label for="export-space">Space ID*</label> <input type="text" id="export-space" name="export-space" required></p>
-      <p><label for="export-space">Environment ID (leave blank for master environment)</label> <input type="text" id="export-environment" name="export-environment"></p>
+      <p><label for="export-environment">Environment ID (leave blank for master environment)</label> <input type="text" id="export-environment" name="export-environment"></p>
       <p><label for="export-management">Management Token*</label> <input type="text" id="export-management" name="export-management" required></p>
     </fieldset>
     <fieldset>
@@ -29,7 +29,7 @@
       <label for="backup-and-import">Backup and Import</label><input type="radio" id="backup-and-import" name="backup-or-import" value="backup-and-import">
     </fieldset>
     <br />
-    <button type="submit" style="margin: 0 auto; display: block; font-size: 1.1em;">Submit</button>
+    <button type="submit">Submit</button>
     <br />
     <p id="queued" style="display: none; text-align: center;">Your request has been queued. This page will be updated once completed, otherwise follow along with the updater in your Node terminal.</p>
     <p id="response" style="display: none; font-family: monospace; text-align: center;"></p>
