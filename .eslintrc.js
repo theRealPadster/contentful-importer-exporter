@@ -11,6 +11,7 @@ module.exports = {
     'ecmaVersion': 'latest'
   },
   'rules': {
+    'eqeqeq': 'error',
     'no-unused-vars': [
       'error',
     ],

@@ -25,7 +25,7 @@ router.post('/', async ctx => {
     const reducedBackupName = body.backupName.replace(/\s+/g, '-').toLowerCase();
 
     // validate that all the necessary fields have been sent
-    if(body.mode && body.mode == 'backup-only') {
+    if(body.mode && body.mode === 'backup-only') {
       if(!(body.backupName && body.exportSpace && body.exportManagement)) throw new Error('missing information');
 
       await contentfulExport({
@@ -37,7 +37,7 @@ router.post('/', async ctx => {
         downloadAssets: body.includeAssets ? true : false,
       });
 
-    } else if (body.mode && body.mode == 'backup-and-import') {
+    } else if (body.mode && body.mode === 'backup-and-import') {
       if(!(body.backupName && body.exportSpace && body.exportManagement && body.importSpace && body.importManagement)) throw new Error('missing information');
 
       await contentfulExport({
@@ -58,6 +58,9 @@ router.post('/', async ctx => {
         assetsDirectory: `./backups/${reducedBackupName}/`,
       });
 
+    } else if (body.mode && body.mode === 'import-only') {
+      console.log('import only not implemented yet');
+      throw new Error('mode not supported');
     } else {
       throw new Error('mode not supported');
     }
@@ -65,10 +68,10 @@ router.post('/', async ctx => {
     ctx.status = 200;
     ctx.body = {success: true, message: 'Information successfully backed up'};
   } catch(e) {
-    if(e.message == 'mode not supported') {
+    if(e.message === 'mode not supported') {
       ctx.status = 400;
       ctx.body = { success: false, message: 'the mode selected is not supported by this application, or no mode has been selected at all' };
-    } else if(e.message == 'missing information') {
+    } else if(e.message === 'missing information') {
       ctx.status = 400;
       ctx.body = { success: false, message: 'information missing in form submission' };
     } else {
