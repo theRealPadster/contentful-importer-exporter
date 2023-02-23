@@ -24,9 +24,11 @@
       <p><label for="import-management">Management Token</label> <input type="text" id="import-management" name="import-management"></p>
     </fieldset>
     <fieldset>
-      <h2>Backup or Import Into Another Organization?</h2>
+      <h2>Back up or Import Into Another Organization?</h2>
       <label for="backup-only">Backup Only</label><input type="radio" id="backup-only" name="backup-or-import" value="backup-only" checked>
       <label for="backup-and-import">Backup and Import</label><input type="radio" id="backup-and-import" name="backup-or-import" value="backup-and-import">
+      <br>
+      <label for="include-assets">Include Assets</label> <input type="checkbox" id="include-assets" name="include-assets">
     </fieldset>
     <br />
     <button type="submit">Submit</button>
@@ -45,7 +47,7 @@
       fetch('/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           backupName: document.querySelector('#backup-name').value,
@@ -54,7 +56,8 @@
           exportManagement: document.querySelector('#export-management').value,
           importSpace: document.querySelector('#import-space').value,
           importManagement: document.querySelector('#import-management').value,
-          mode: document.querySelector('[name=backup-or-import]:checked').value
+          mode: document.querySelector('[name=backup-or-import]:checked').value,
+          includeAssets: document.querySelector('#include-assets').checked,
         })
       })
         .then(response => response.json())

@@ -10,7 +10,7 @@ const contentfulExport = require('contentful-export');
 const app = new koa();
 const router = new Router();
 
-// Get route (render the page)
+// GET route (render the page)
 router.get('/', async ctx => {
   await ctx.render('index');
 });
@@ -19,8 +19,10 @@ router.get('/', async ctx => {
 router.post('/', async ctx => {
   try {
     const body = ctx.request.body;
-    console.log('ENVIRONMENT: ---------');
-    console.log(body.exportEnvironment? body.exportEnvironment : 'master');
+    const environment = body.exportEnvironment || 'master';
+    console.log(`ENVIRONMENT: ${environment} ---------`);
+
+    const reducedBackupName = body.backupName.replace(/\s+/g, '-').toLowerCase();
 
     // validate that all the necessary fields have been sent
     if(body.mode && body.mode == 'backup-only') {
@@ -29,28 +31,31 @@ router.post('/', async ctx => {
       await contentfulExport({
         spaceId: body.exportSpace,
         managementToken: body.exportManagement,
-        exportDir: './backups/',
-        contentFile: body.backupName.replace(/\s+/g, '-').toLowerCase() + '.json',
+        environmentId: environment,
+        exportDir: `./backups/${reducedBackupName}/`,
+        contentFile: `${reducedBackupName}.json`,
+        downloadAssets: body.includeAssets ? true : false,
       });
 
     } else if (body.mode && body.mode == 'backup-and-import') {
       if(!(body.backupName && body.exportSpace && body.exportManagement && body.importSpace && body.importManagement)) throw new Error('missing information');
 
-      let reducedFileName = body.backupName.replace(/\s+/g, '-').toLowerCase();
-
       await contentfulExport({
         spaceId: body.exportSpace,
         managementToken: body.exportManagement,
-        environmentId: body.exportEnvironment? body.exportEnvironment : 'master',
-        exportDir: './backups/',
-        contentFile: reducedFileName + '.json'
+        environmentId: environment,
+        exportDir: `./backups/${reducedBackupName}/`,
+        contentFile: `${reducedBackupName}.json`,
+        downloadAssets: body.includeAssets ? true : false,
       });
 
       await contentfulImport({
         spaceId: body.importSpace,
         managementToken: body.importManagement,
         environmentId: 'master',
-        contentFile: './backups/' + reducedFileName + '.json'
+        contentFile: `./backups/${reducedBackupName}/${reducedBackupName}.json`,
+        uploadAssets: body.includeAssets ? true : false,
+        assetsDirectory: `./backups/${reducedBackupName}/`,
       });
 
     } else {
@@ -74,6 +79,7 @@ router.post('/', async ctx => {
   }
 });
 
+// Initialize the server
 app
   .use(views(path.resolve(__dirname, './views')), { map: { html: 'swig' } })
   .use(require('koa-bodyparser')())
